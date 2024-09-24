@@ -1,0 +1,115 @@
+<div class="container mt-5">
+    <div class="d-flex">
+        <div class="btn-group">
+
+            <button class="btn btn-primary"
+            btnRadio="Unread"
+            [(ngModel)]="container"
+            (click)="loadMessages()"           
+            >Unread</button>
+
+            <button class="btn btn-primary"
+            btnRadio="Inbox"
+            [(ngModel)]="container"
+            (click)="loadMessages()"           
+            >Inbox</button>
+
+            <button class="btn btn-primary"
+            btnRadio="Outbox"
+            [(ngModel)]="container"
+            (click)="loadMessages()"           
+            >Outbox</button>
+
+
+
+        </div>
+    </div>
+</div>
+
+@if (!messageServices.paginatedResult()?.items || messageServices.paginatedResult()?.items?.length === 0) {
+    <h3 class="mt-3">No Messages Yet</h3>
+} @else {
+    <table class="table table-hover mt-3" style="cursor: pointer;">
+        <thead>
+            <th style="width: 40%;"> Message</th>
+            <th style="width: 20%;" *ngIf="container !== 'Outbox'" > From</th>
+            <th style="width: 20%;" *ngIf="container === 'Outbox'" > To</th>
+            <th style="width: 20%;"  *ngIf="container !== 'Outbox'"> Recieved</th>
+            <th style="width: 20%;"  *ngIf="container === 'Outbox'"> Sent</th>
+            <th style="width: 20%;"> </th>
+
+        </thead>
+
+<tbody class="alig">
+@for (message of messageServices.paginatedResult()?.items; track message.id) {
+    <tr routerLink="{{getRout(message)}}" [queryParams]="{tab: 'Messages'}">  
+        <td >
+    
+
+            <p>{{message.content}}</p>
+    </td>
+
+    <td >
+       <div class="d-flex">
+        
+
+    <img 
+    *ngIf="container === 'Outbox'"   
+    [src]="message.receiverPhotoUrl || './assets/user.jpg'" 
+    alt="User Photo"
+    style="border-radius: 50%; width: 2rem; height: 2rem; margin-right: 1rem;">
+
+
+    <img 
+    *ngIf="container !== 'Outbox'"   
+    [src]="message.senderPhotoUrl || './assets/user.jpg'" 
+    alt="User Photo"
+    style="border-radius: 50%; width: 2rem; height: 2rem; margin-right: 1rem;">
+
+ <strong>
+        <h6 *ngIf="container !== 'Outbox'"   >
+        {{message.senderName || 'Unknown Sender' }}
+        </h6>
+         </strong>
+
+
+    <strong>
+        <h6 *ngIf="container === 'Outbox'">
+        {{ message.receiverName || 'Unknown Sender' }}
+    </h6>
+      </strong>
+      
+
+   
+       </div>
+   </td>
+
+<td >{{message.sentDate | timeago}}</td>
+ <td (click)="$event.stopPropagation()"><button class="btn btn-transparent p-0 border-0" (click)="deleteMessages(message.id)">
+<i class="fa fa-trash p-3" style="color: red; font-size: 1.5rem;"></i>
+ </button></td>
+</tr> 
+}
+</tbody>
+
+</table>
+}
+
+@if (messageServices.paginatedResult()?.pagination && messageServices.paginatedResult()?.pagination?.totalItems) {
+    <footer class="d-flex justify-content-center">
+   <pagination [boundaryLinks]="true" 
+   [totalItems]="messageServices.paginatedResult()?.pagination!.totalItems"
+   [itemsPerPage]="messageServices.paginatedResult()?.pagination!.itemsPerPage"
+  (pageChanged)=" pageChanged($event)"
+  [(ngModel)]="messageServices.paginatedResult()?.pagination!.currentPage"
+  [maxSize]="10"
+    previousText="&lsaquo;" 
+    nextText="&rsaquo;" 
+    firstText="&laquo;" 
+    lastText="&raquo;"
+
+    >
+
+</pagination>
+</footer>  
+}

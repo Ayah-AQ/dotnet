@@ -1,0 +1,41 @@
+<div class="card mb-4">
+    <div class="card-img-wrapper">
+        <a routerLink="{{member().username}}" class="btn btn-transparent " style=" padding: 0;width: 100%;"><img src="{{member().photoUrl || '/assets/user.jpg' }}" alt="{{member().knownAs}}" class="card-img-top " style="width: 100%;"></a>
+       <!-- <img src="/assets/user.jpg" alt="{{member().knownAs}}"  style="width: 100%;"> -->
+        <ul class="list-inline member-icons animate text-center" >
+            <li class="list-inline-item">
+                <button class="btn btn-transparent border-0"  style="width: 1rem;" routerLink="/members/{{member().username}}" [queryParams]="{tab: 'Messages'}"><i class="fa fa-envelope"  style="font-size: xx-large; padding: 2%;"></i></button>
+            </li>
+            <li class="list-inline-item">
+            @if (hasLiked()) {
+
+                <button class="btn btn-transparent border-0" (click)="toggleLike()" style="width: 1rem;"><i class="fa fa-heart"  style="color: red; font-size: xx-large; padding: 2%;"></i></button>
+            }
+            @else if(!hasLiked()) {
+                <button class="btn btn-transparent border-0" (click)="toggleLike()" style="width: 1rem;"><i class="fa fa-heart"  style=" font-size: xx-large; padding: 2%;"></i></button>
+            }
+            </li>
+            <li class="list-inline-item">
+                <button class="btn btn-transparent border-0" routerLink="{{member().username}}"  style="width: 1rem;"><i class="fa fa-user " style="font-size: xx-large; padding: 2%;"></i></button>
+            </li>
+            
+        </ul>
+    
+    </div>
+
+
+<!-- <div>  -->
+    <div class="card-body " >
+        <h6 class="card-title text-center mb-1">
+            <i class="fa fa-user me-2"></i>
+            {{member().knownAs}}
+            @if (hasLiked()) {
+                <i class="fa fa-heart ms-2" style="color: red;"></i>
+            }
+        </h6>
+        <p class="'card-text text-muted text-center">{{member().city}}</p>
+        <p class="'card-text text-muted text-center">{{member().age}} </p>
+       
+   </div>
+<!-- </div> -->
+</div>

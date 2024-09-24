@@ -1,0 +1,66 @@
+<div class=" d-flex ">
+
+<div class="mt-5 border p-5 " >
+    <img style="margin-left: 0; padding-left: 0;" src="{{member.photoUrl || '/assets/user.jpg' }}" alt="{{member.knownAs}}" style="width:20rem; height: 20rem; border-radius: 50%; margin-top: 3%;">
+ <ul style="margin-top: 5%; margin-left: 5%;">
+  
+ <strong>Age</strong>
+    <p>{{member.age}}</p> 
+    <strong>Location</strong>
+     <p>{{member.country}} - {{member.city}}</p>
+       <strong>member since</strong> <p>{{member.created | date: 'yyyy'}} </p>
+       <strong> 
+       last active </strong> <p>{{member.lastActive | timeago}}
+     </p>
+     <div class="d-flex p-5">
+        <button (click)="selectTab('Messages')" class="btn btn-transparent border-0"><i class="fa fa-envelope" style="font-size:xx-large;"></i></button>
+        
+        <button style=" padding-left:30% ;" class="btn btn-transparent border-0"><i class="fa fa-heart" style="font-size:xx-large;" ></i></button>
+        </div>
+</ul>
+</div>
+
+
+<div style="width: 100%;">
+    <div style="padding: 3%;">
+        <tabset class="member-tabset" #memberTabs>
+          <tab 
+          heading="About" 
+          id="tab1" 
+          style="padding-top: 2rem;"
+          (selectTab)="onTabActivated($event)"
+          
+          >
+            <strong><h3>Looking for</h3></strong>{{member.lookingFor}}</tab>
+          <!-- <tab heading="Interest">{{member.interest}}</tab> -->
+          <tab 
+          heading="Photos" 
+          #photoTab="tab"
+          (selectTab)="onTabActivated($event)"
+          
+          >
+            @if (photoTab.active) {
+            <gallery [items]="images" 
+            [itemAutosize]="true"
+            class="gallery"
+            ></gallery>
+          }</tab>
+          <tab 
+          heading="Messages"
+          (selectTab)="onTabActivated($event)"
+          >
+          
+          <app-message 
+          [username]="member.username" 
+          [messages]="messages"
+          (updateMessages)="onUpdateMessages($event)"
+          ></app-message>
+          </tab>
+
+        </tabset>
+      </div>
+  </div>
+
+</div>
+      
+

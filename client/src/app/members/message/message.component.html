@@ -1,0 +1,80 @@
+<!-- @for (message of messages; track message.id) {
+    
+
+        <p>{{message.content}}</p>
+    } -->
+
+
+<div class="card">
+    <div class="card-body">
+      @if(messages?.length === 0){
+      <p>No messages yet</p>
+      } @else {
+      <ul class="chat">
+        @for (message of messages; track message.id) {
+  
+        <li>
+          <div>
+            <span class="chat-img float-end">
+              <img
+                [src]="message.senderPhotoUrl || './assets/profile.jpg'"
+                alt="Sender img"
+                class="rounded-circle mt-3"
+
+              />
+            </span>
+            <div class="chat-body">
+              <div class="header">
+                  <small class="text-muted">
+                      <span class="fa fa--clock-o">
+                          {{message.sentDate| timeago}}
+                      </span>
+  
+                      @if ((!message.dateRead && message.senderName !== username)) {
+                          <span class="text-danger">
+                              (Unread)
+                          </span>
+                      }
+  
+                      @if ((message.dateRead && message.senderName !== username)) {
+                          <span class="text-success">
+                              (Read {{message.dateRead | timeago}})
+                          </span>
+                      }
+  
+                  </small>
+              </div>
+              
+              
+              <p>{{message.content}}</p>
+          </div>
+          
+          </div>
+        </li>
+  
+        }
+      </ul>
+      }
+    </div>
+  
+  
+    <div class="card-footer">
+      <form #messageForm="ngForm" (ngSubmit)="sendMessage()">
+          <div type="text" class="input-group">
+              <input 
+              name="messageContent"
+              required
+              [(ngModel)]="messageContent"
+              type="text"
+              class="form-control input-sm"
+              placeholder="type your messag"
+              >
+              <div class="input-group-append">
+                  <button [disabled]="!messageForm.valid" class="btn btn-primary" type="submit" >Send</button>
+              </div>
+          </div>
+      </form>
+    </div>
+  
+  </div>
+  
