@@ -13,6 +13,8 @@ import { preventUnsvedChangesGuard } from './_guards/prevent-unsved-changes.guar
 import { ListComponent } from './List/list.component';
 import { MessageComponent } from './members/message/message.component';
 import { memberDetailedResolver } from './_resolver/member-detailed.resolver';
+import { AdminPanalComponent } from './admin/admin-panal/admin-panal.component';
+import { adminGuard } from './_guards/admin.guard';
 
 
 export const routes: Routes = [
@@ -27,6 +29,7 @@ export const routes: Routes = [
     {path: 'members/:username', component:MemberDetailComponent, resolve:{member:memberDetailedResolver}},
     {path: 'messages', component:MessagesComponent},
     {path: 'messages/:username', component:MessageComponent},
+    {path: 'admin', component:AdminPanalComponent, canActivate:[adminGuard] },
     ]},
     {path: 'signup', component:RegisterComponent},
     {path: 'errors', component:TestErrorsComponent},

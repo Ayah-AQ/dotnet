@@ -84,7 +84,7 @@
         }
 
 
-        @if (memberService.paginationResults()?.pagination) {
+        @if (memberService.paginationResults()?.pagination && memberService.paginationResults()?.pagination?.totalItems ) {
             <footer class="d-flex justify-content-center">
            <pagination [boundaryLinks]="true" 
            [totalItems]="memberService.paginationResults()?.pagination!.totalItems"

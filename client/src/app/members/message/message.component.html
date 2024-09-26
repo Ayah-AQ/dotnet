@@ -30,13 +30,13 @@
                           {{message.sentDate| timeago}}
                       </span>
   
-                      @if ((!message.dateRead && message.senderName !== username)) {
+                      @if ((!message.dateRead && message.senderName !== userName)) {
                           <span class="text-danger">
                               (Unread)
                           </span>
                       }
   
-                      @if ((message.dateRead && message.senderName !== username)) {
+                      @if ((message.dateRead && message.senderName !== userName)) {
                           <span class="text-success">
                               (Read {{message.dateRead | timeago}})
                           </span>

@@ -1,4 +1,8 @@
 import {
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR
+} from "./chunk-33K2WART.js";
+import {
   ComponentLoaderFactory,
   OnChange,
   PlacementForBs5,
@@ -6,7 +10,7 @@ import {
   getBsVer,
   parseTriggers,
   warnOnce
-} from "./chunk-HJOLDDP6.js";
+} from "./chunk-TY7AVVGY.js";
 import {
   animate,
   state,
@@ -14,10 +18,6 @@ import {
   transition,
   trigger
 } from "./chunk-7SKC2N7G.js";
-import {
-  NG_VALIDATORS,
-  NG_VALUE_ACCESSOR
-} from "./chunk-33K2WART.js";
 import {
   AsyncPipe,
   CommonModule,

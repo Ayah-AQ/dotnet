@@ -10,7 +10,8 @@ import { jwtInterceptor } from './_interceptors/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './_interceptors/loading.interceptor';
 import { TimeagoModule } from "ngx-timeago";
-import { NgIf } from '@angular/common';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [ 
@@ -21,6 +22,6 @@ export const appConfig: ApplicationConfig = {
     provideToastr({
         positionClass:'toast-top-center'
     }),
-    importProvidersFrom(NgxSpinnerModule,TimeagoModule.forRoot(),NgIf)
+    importProvidersFrom(NgxSpinnerModule,TimeagoModule.forRoot(),ModalModule.forRoot(),) //.forRoot() method when you're setting up a module that provides services or configurations that should be available application-wide.
   ]
 };

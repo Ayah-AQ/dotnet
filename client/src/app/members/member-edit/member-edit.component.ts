@@ -44,9 +44,11 @@ ngOnInit(): void {
 loadMember(){
   const user= this.accountService.currentUser();
   if (!user) {
+    console.log(user)
     return
+
   }
-  this.memberService.getMember(user.username).subscribe ({
+  this.memberService.getMember(user.userName).subscribe ({
     next: member => 
       {this.member = member;
     this.originalDateOFBirth = this.member?.DateOFBirth}
@@ -57,7 +59,7 @@ loadMember(){
 
 updateMember(){
   
-  const name= this.member?.username
+  const name= this.member?.userName
   if (this.editForm?.value.DateOFBirth === this.originalDateOFBirth) {
     delete this.editForm?.value.DateOFBirth; 
   }
@@ -71,7 +73,7 @@ updateMember(){
   this.router.navigateByUrl(`/members/${name}`)
 
 
-  if (name !== this.accountService.currentUser()?.username) {
+  if (name !== this.accountService.currentUser()?.userName) {
     this.logout();
   }
 },

@@ -28,7 +28,7 @@ export class MemberDetailComponent implements OnInit{
   images: GalleryItem[]=[]
   activeTab ?: TabDirective
   messages:Message[]=[]
-@Input() username?: string;
+@Input() userName?: string;
 
   // model: any ={};
 
@@ -68,8 +68,8 @@ if(this.memberTabs){
 onTabActivated(data: TabDirective){
   this.activeTab =data;
   if(this.activeTab.heading === 'Messages' && this.messages.length === 0 && this.member)  {
-    if (this.username) {
-      this.messageService.messageThread(this.member?.username)
+    if (this.userName) {
+      this.messageService.messageThread(this.member?.userName)
       .subscribe({
 
         next: m => this.messages=m

@@ -30,6 +30,7 @@ ngOnInit(): void {
   if (!this.memberService.paginationResults()) { 
     
     return this.loadMembers() ;
+    
   }
 
 }

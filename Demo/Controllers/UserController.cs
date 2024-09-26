@@ -20,7 +20,6 @@ namespace Demo.Controllers;
 [Authorize]
 public class UserController(IUserReposatory userReposatory, IMapper mapper, IphotoService photoService) : BaseApiController
 {
- 
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
@@ -35,10 +34,10 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
         return Ok(users);
     }
 
-    private async Task<ActionResult<IEnumerable<AppUser>>> GetUsersAsync()
-    {
-        throw new NotImplementedException();
-    }
+    //private async Task<ActionResult<IEnumerable<AppUser>>> GetUsersAsync()
+    //{
+    //    throw new NotImplementedException();
+    //}
 
     [HttpGet("{username}")]
     public async Task<ActionResult<MemberDto>> GetUser(string username)

@@ -20,7 +20,7 @@ public messageServices = inject(MessageService);
 public memberServices = inject(MembersService);
 
 
-@Input() username?: string;
+@Input() userName?: string;
 @Input() messages?: Message[]=[]
   // messages= input.required<Message[]>()
   // username= input.required<string>()
@@ -34,8 +34,8 @@ ngOnInit(): void {
 }
 
 loadMessages(): void {
-  if(this.username){
-  this.messageServices.messageThread(this.username).subscribe({
+  if(this.userName){
+  this.messageServices.messageThread(this.userName).subscribe({
     next: (messages) => {
       this.messages = messages;
     },
@@ -48,8 +48,8 @@ loadMessages(): void {
 
 
 sendMessage() {
-  if (this.username) {
-    this.messageServices.sendMessages(this.username, this.messageContent).subscribe({
+  if (this.userName) {
+    this.messageServices.sendMessages(this.userName, this.messageContent).subscribe({
       next: message => {
         this.updateMessages.emit(message);
         this.messageForm?.reset()

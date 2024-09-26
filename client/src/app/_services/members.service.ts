@@ -59,18 +59,19 @@ resetuserParams(){
 }
 
 
-getMember(username: string){
+getMember(userName: string){
   // const member = this.members().find(x => x.username === username);
   // if (  member != undefined) return of(member);
+  // debugger
 
 const member:Member = [...this.memberCache.values()]
 .reduce((arr, elem) => arr.concat(elem.body), [])
-.find((m: Member) => m.username === username);
+.find((m: Member) => m.userName === userName);
 
 if (member) {
   return of(member);
 }
-  return this.http.get<Member>(`${this.baseUrl}user/${username}`);
+  return this.http.get<Member>(`${this.baseUrl}user/${userName}`);
 
 }
 

@@ -26,15 +26,15 @@ getMessages(pageNumber:number, pageSize:number,container:string){
   })
 }
 
-messageThread(username: string){
+messageThread(userName: string){
 
-  return this.http.get<Message[]>(`${this.baseUrl}messages/thread/${username}`)
+  return this.http.get<Message[]>(`${this.baseUrl}messages/thread/${userName}`)
 }
 
 
-sendMessages(username: string, content: string){
+sendMessages(userName: string, content: string){
 
-  return this.http.post<Message>(`${this.baseUrl}messages`, {receiverName: username, content})
+  return this.http.post<Message>(`${this.baseUrl}messages`, {receiverName: userName, content})
 }
 
 deleteMessages(id: number){

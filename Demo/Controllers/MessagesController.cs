@@ -23,7 +23,7 @@ namespace Demo.Controllers
             var sender = await userReposatory.GetUserByUsernameAsync(username);
             var reciever = await userReposatory.GetUserByUsernameAsync(createMessageDto.ReceiverName);
 
-            if (reciever == null | sender == null) return BadRequest("Message can't be send at this time");
+            if (reciever == null | sender == null ||sender?.UserName ==null || reciever?.UserName== null) return BadRequest("Message can't be send at this time");
 
             var message = new Message
             {

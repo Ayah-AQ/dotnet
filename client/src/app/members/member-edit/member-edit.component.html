@@ -14,7 +14,7 @@
           <h6 class="mt-5 text-xl-center text-">Member since: {{member.created | date: 'yyyy'}}</h6>
            
             <div class="p-5">
-                @if (!member.username) {
+                @if (!member.userName) {
                     logout()
                 }
                 <button [disabled]="!editForm.dirty" type="submit" form="editForm" class="btn btn-dark col-12" >Save Changes</button>
@@ -40,8 +40,8 @@
                         <br/>
 
                         <input type="text"
-                        name="username" 
-                [(ngModel)]="member.username"
+                        name="userName" 
+                [(ngModel)]="member.userName"
                         />
                         <br/>
                         <br/>

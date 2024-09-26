@@ -4,6 +4,6 @@ namespace Demo
 {
     public interface ITokenSurvice
     {
-        string CreateToken(AppUser user);
+        Task<string> CreateToken(AppUser user);
     }
 }

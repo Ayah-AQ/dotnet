@@ -1,0 +1,31 @@
+<div class="row">
+    <p>{{printUser()}}</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 30%;">
+                    Username
+                </th>
+
+                <th style="width: 40%;">
+                    Active roles
+                </th>
+              
+                <th style="width: 30%;">
+                    
+                </th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @for (user of users; track user) {
+                <tr>
+                    <td>{{user.userName}}</td>
+                    <td>{{user.roles}}</td>
+                    <td><button class="btn btn-transperent border-0" (click)="createRoleModule()"><i class="fa fa-edit" style="font-size: larger;"></i></button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

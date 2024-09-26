@@ -2,6 +2,7 @@
 using Demo.Data;
 using Demo.Dtos;
 using Demo.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -10,13 +11,13 @@ using System.Text;
 
 namespace Demo.Controllers;
 
-public class AccountController(DataContext context, ITokenSurvice TokenService,IMapper mapper) :BaseApiController
+public class AccountController(UserManager<AppUser> userManager, ITokenSurvice TokenService,IMapper mapper) :BaseApiController
 {
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
         if (await UserExists(registerDto.Username)) return BadRequest("Username already taken");
-        using var hmac = new HMACSHA512();
+        //using var hmac = new HMACSHA512();
 
 
         var user = mapper.Map<AppUser>(registerDto);
@@ -24,13 +25,16 @@ public class AccountController(DataContext context, ITokenSurvice TokenService,I
         //user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
         //user.PasswordSalt = hmac.Key;
 
-        context.Users.Add(user);
-        await context.SaveChangesAsync();
+        // userManager.Users.Add(user);
+
+      var results = await userManager.CreateAsync(user);
+
+        if (!results.Succeeded) return BadRequest(results.Errors); 
 
         return new UserDto
         {
             Username = user.UserName,
-            Token = TokenService.CreateToken(user),
+            Token =await TokenService.CreateToken(user),
             KnownAs = user.KnownAs,
             Gender= user.Gender,
             PhotoUrl= user.Photos.FirstOrDefault(x => x.IsMain)?.Url
@@ -42,12 +46,15 @@ public class AccountController(DataContext context, ITokenSurvice TokenService,I
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
 
-        var user = await context.Users
-            .Include(p=>p.Photos)
+        var user = await userManager.Users
+            .Include(p => p.Photos)
             .FirstOrDefaultAsync(
-            x => x.UserName.ToLower() == loginDto.Username.ToLower());
+            x => x.NormalizedUserName == loginDto.Username.ToUpper());
 
-        if (user == null) return Unauthorized("username does not exist");
+        if (user == null || user.UserName == null) return Unauthorized("username does not exist");
+
+        var results= await userManager.CheckPasswordAsync(user, loginDto.Password);
+        if (!results) return BadRequest("unauth");
 
         //using var hmac = new HMACSHA512(user.PasswordSalt);
 
@@ -62,7 +69,7 @@ public class AccountController(DataContext context, ITokenSurvice TokenService,I
             Username = user.UserName,
             PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
             Gender = user.Gender,
-            Token = TokenService.CreateToken(user), 
+            Token = await TokenService.CreateToken(user), 
         
         };
            
@@ -75,7 +82,7 @@ public class AccountController(DataContext context, ITokenSurvice TokenService,I
 
         private async Task<bool> UserExists(string username)
         {
-        return await context.Users.AnyAsync(x => x.UserName.ToLower() == username.ToLower());
+        return await userManager.Users.AnyAsync(x => x.NormalizedUserName == username.ToUpper());
         }
 
 

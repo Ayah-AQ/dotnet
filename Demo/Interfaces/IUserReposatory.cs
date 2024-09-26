@@ -13,5 +13,6 @@ namespace Demo.Interfaces;
         Task<AppUser?> GetUserByUsernameAsync(string username);
         Task<pagedList<MemberDto>> GetMembersAsync(UserParams userParams);
         Task<MemberDto?> GetMemberAsync(string username);
-    
+        //Task<AppUserRole?> GetUsersWithRoles(string username);
+
 }

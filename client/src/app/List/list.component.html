@@ -1,5 +1,5 @@
 
-<div class="text-center mt-3">
+<div class="text-center mt-5">
     <h2>
         {{getTitle()}}
     </h2>
@@ -44,7 +44,7 @@
 
 
 
-    @if (likeService.paginationResults()?.pagination) {
+    @if (likeService.paginationResults()?.pagination && likeService.paginationResults()?.pagination?.totalItems) {
         <footer class="d-flex justify-content-center">
        <pagination [boundaryLinks]="true" 
        [totalItems]="likeService.paginationResults()?.pagination!.totalItems"
