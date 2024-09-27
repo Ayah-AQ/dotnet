@@ -32,3 +32,13 @@ height: 7rem;
     background-color:rgba(0, 0, 0, 0.363);
     opacity: 1;
 }
+
+@keyframes fa-blink{
+    0%{opacity: 1;}
+    100%{opacity: 0.4;}
+}
+
+.is-online{
+    animation: forwards fa-blink 1.5s linear infinite;
+    color: rgba(1, 189, 42);
+}

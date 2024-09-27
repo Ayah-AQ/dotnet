@@ -5,7 +5,7 @@ namespace Demo.Dtos
     public class RegisterDto
     {
         [Required]
-        public string Username { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
 
         [Required]
         public required string KnownAs { get; set; }

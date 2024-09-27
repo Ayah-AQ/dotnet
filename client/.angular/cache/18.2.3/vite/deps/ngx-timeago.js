@@ -17,7 +17,7 @@ import {
   ɵɵdirectiveInject,
   ɵɵgetInheritedFactory,
   ɵɵinject
-} from "./chunk-XGM6Q4LO.js";
+} from "./chunk-LHHRKK27.js";
 import {
   Subject,
   empty,
@@ -26,7 +26,8 @@ import {
   of,
   skip,
   timer
-} from "./chunk-32NV2NRG.js";
+} from "./chunk-WGZFJKR4.js";
+import "./chunk-J25FJFZE.js";
 
 // node_modules/ngx-timeago/fesm2022/ngx-timeago.mjs
 function isDefined(value) {

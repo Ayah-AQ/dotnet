@@ -3,6 +3,7 @@ using Demo.Data;
 using Demo.Entities;
 using Demo.Extintions;
 using Demo.middleware;
+using Demo.SignalR;
 using Demo.Survices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -38,7 +39,7 @@ app.UseHttpsRedirection();
 //app.UseAuthorization();
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
 .WithOrigins("https://localhost:4200", "http://localhost:4200")
 );
 
@@ -46,6 +47,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
+
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

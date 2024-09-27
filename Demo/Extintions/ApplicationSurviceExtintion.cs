@@ -1,6 +1,7 @@
 ﻿using Demo.Data;
 using Demo.Helpers;
 using Demo.Interfaces;
+using Demo.SignalR;
 using Demo.Survices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,7 +44,8 @@ namespace Demo.Extintions
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySetting"));
-
+            services.AddSignalR();
+            services.AddSingleton<PresenceTracker>();
 
             return services;
         }

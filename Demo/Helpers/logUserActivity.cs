@@ -23,7 +23,7 @@ namespace Demo.Helpers
                 return;
             }
 
-            user.lastActive = DateTime.UtcNow;
+            user.LastActive = DateTime.UtcNow;
             await repo.SaveAllAsync();
         }
     }

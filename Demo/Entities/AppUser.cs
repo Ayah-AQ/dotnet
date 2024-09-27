@@ -12,7 +12,7 @@ public class AppUser :IdentityUser<int>
     public DateOnly DateOFBirth { get; set; }
     public required string KnownAs { get; set; }
     public DateTime Created { get; set; } = DateTime.UtcNow;
-    public DateTime lastActive { get; set; } = DateTime.UtcNow;
+    public DateTime LastActive { get; set; } = DateTime.UtcNow;
     
     public string? LookingFor { get; set; }
     public required string Gender { get; set; }

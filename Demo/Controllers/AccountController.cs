@@ -16,12 +16,12 @@ public class AccountController(UserManager<AppUser> userManager, ITokenSurvice T
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
-        if (await UserExists(registerDto.Username)) return BadRequest("Username already taken");
+        if (await UserExists(registerDto.UserName)) return BadRequest("Username already taken");
         //using var hmac = new HMACSHA512();
 
 
         var user = mapper.Map<AppUser>(registerDto);
-        user.UserName = registerDto.Username.ToLower();
+        user.UserName = registerDto.UserName.ToLower();
         //user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
         //user.PasswordSalt = hmac.Key;
 
@@ -33,7 +33,7 @@ public class AccountController(UserManager<AppUser> userManager, ITokenSurvice T
 
         return new UserDto
         {
-            Username = user.UserName,
+            UserName = user.UserName,
             Token =await TokenService.CreateToken(user),
             KnownAs = user.KnownAs,
             Gender= user.Gender,
@@ -49,7 +49,7 @@ public class AccountController(UserManager<AppUser> userManager, ITokenSurvice T
         var user = await userManager.Users
             .Include(p => p.Photos)
             .FirstOrDefaultAsync(
-            x => x.NormalizedUserName == loginDto.Username.ToUpper());
+            x => x.NormalizedUserName == loginDto.UserName.ToUpper());
 
         if (user == null || user.UserName == null) return Unauthorized("username does not exist");
 
@@ -66,7 +66,7 @@ public class AccountController(UserManager<AppUser> userManager, ITokenSurvice T
 
         return new UserDto {
             KnownAs = user.KnownAs,
-            Username = user.UserName,
+            UserName = user.UserName,
             PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
             Gender = user.Gender,
             Token = await TokenService.CreateToken(user), 
@@ -80,9 +80,9 @@ public class AccountController(UserManager<AppUser> userManager, ITokenSurvice T
     /*
          //unique*/
 
-        private async Task<bool> UserExists(string username)
+        private async Task<bool> UserExists(string userName)
         {
-        return await userManager.Users.AnyAsync(x => x.NormalizedUserName == username.ToUpper());
+        return await userManager.Users.AnyAsync(x => x.NormalizedUserName == userName.ToUpper());
         }
 
 

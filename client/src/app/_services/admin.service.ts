@@ -22,9 +22,9 @@ export class AdminService {
     return this.http.get<User[]>(`${this.baseUrl}admin/users-with-roles`);
   }
 
-
-  editRoles(user: User){
-    return this.http.put(`${this.baseUrl}admin/edit-roles`, user)
+ 
+  editRoles(userName:string, roles: string[]){
+    return this.http.post<string[]>(`${this.baseUrl}admin/edit-roles/${userName}?roles=${roles}`, {})
   }
 
 

@@ -1,8 +1,4 @@
 import {
-  NG_VALIDATORS,
-  NG_VALUE_ACCESSOR
-} from "./chunk-33K2WART.js";
-import {
   ComponentLoaderFactory,
   OnChange,
   PlacementForBs5,
@@ -10,14 +6,18 @@ import {
   getBsVer,
   parseTriggers,
   warnOnce
-} from "./chunk-TY7AVVGY.js";
+} from "./chunk-4L6L5COK.js";
+import {
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR
+} from "./chunk-AZYPKAI2.js";
 import {
   animate,
   state,
   style,
   transition,
   trigger
-} from "./chunk-7SKC2N7G.js";
+} from "./chunk-Z6FXEXS5.js";
 import {
   AsyncPipe,
   CommonModule,
@@ -26,7 +26,7 @@ import {
   NgIf,
   NgSwitch,
   NgSwitchCase
-} from "./chunk-XABLQQBA.js";
+} from "./chunk-6HEMLZEY.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -86,7 +86,7 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵviewQuery
-} from "./chunk-XGM6Q4LO.js";
+} from "./chunk-LHHRKK27.js";
 import {
   BehaviorSubject,
   Observable,
@@ -104,7 +104,8 @@ import {
   take,
   takeUntil,
   timer
-} from "./chunk-32NV2NRG.js";
+} from "./chunk-WGZFJKR4.js";
+import "./chunk-J25FJFZE.js";
 
 // node_modules/ngx-bootstrap/chronos/fesm2022/ngx-bootstrap-chronos.mjs
 function mod(n, x) {

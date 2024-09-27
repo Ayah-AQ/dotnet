@@ -22,7 +22,7 @@ namespace Demo.Data
         {
             var query = context.Users.AsQueryable();
 
-            query = query.Where(x => x.UserName != userParams.CurrentUsername);
+            query = query.Where(x => x.UserName != userParams.CurrentUserName);
 
             if (userParams.Gender != null)
             {
@@ -42,7 +42,7 @@ namespace Demo.Data
                 query = userParams.OrderBy switch
                 {
                     "created" => query.OrderByDescending(x => x.Created),
-                    "lastActive" => query.OrderByDescending(x => x.lastActive),
+                    "lastActive" => query.OrderByDescending(x => x.LastActive),
                     _ => query.OrderByDescending(x => x.Created) 
                 };
             }

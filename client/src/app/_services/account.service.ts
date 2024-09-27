@@ -4,6 +4,7 @@ import { User } from '../_models/user';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LikesService } from './likes.service';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ import { LikesService } from './likes.service';
 export class AccountService {
 
   private likeService = inject(LikesService)
+  private prsenceService = inject(PresenceService)
  private http = inject(HttpClient);
  baseUrl = environment.apiUrl;
 
@@ -63,6 +65,7 @@ setCurrentUser(user: User){
    localStorage.setItem('user',JSON.stringify(user));
         this.currentUser.set(user);
         this.likeService.getLikeIds()
+        this.prsenceService.createHubConnection(user)
 }
 
 //This line converts the user object into a JSON string using JSON.stringify() and stores it in the browser's local storage under the key 'user'. 
@@ -76,5 +79,6 @@ setCurrentUser(user: User){
  logout(){
   localStorage.removeItem('user')
   this.currentUser.set(null)
+  this.prsenceService.stopHubConnection();
  }
 }

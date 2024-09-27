@@ -25,7 +25,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
       
     {
-        userParams.CurrentUsername=User.GetUsername();
+        userParams.CurrentUserName=User.GetUsername();
         
         var users = await userReposatory.GetMembersAsync(userParams);
 

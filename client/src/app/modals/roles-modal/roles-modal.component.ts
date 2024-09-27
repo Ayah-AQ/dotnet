@@ -14,6 +14,7 @@ export class RolesModalComponent {
   title= ''
   availableRoles: string[]=[]
   SelectedRoles: string[]=[]
+  rolesUpdated= false
   userName= ''
 
   updateChecked(checkedVale: string){
@@ -25,5 +26,10 @@ export class RolesModalComponent {
       this.SelectedRoles.push(checkedVale)
     }
   }
+
+onSelectRoles(){
+  this.rolesUpdated = true
+  this.bsModalRef.hide()
+}
 
 }
