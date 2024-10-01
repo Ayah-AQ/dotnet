@@ -7,51 +7,103 @@
 
 <div class="card">
     <div class="card-body">
-      @if(messages?.length === 0){
+      @if(messageServices.messageThreads()?.length === 0){
       <p>No messages yet</p>
       } @else {
-      <ul class="chat">
-        @for (message of messages; track message.id) {
-  
-        <li>
+      <ul 
+      class="chat"
+      #scrollMe
+      style="overflow-y: scroll;max-height:70vh; scroll-behavior: smooth;"
+      >
+        @for (message of messageServices.messageThreads(); track message.id) {
+          @if (message.senderName !== accountServices.currentUser()?.userName) {
+             <li style="display:flex; justify-content: start;">
           <div>
-            <span class="chat-img float-end">
-              <img
+            <!-- <div class="d-flex"> -->
+              
+              <span class="chat-img float-end d-flex " >
+                <img
                 [src]="message.senderPhotoUrl || './assets/profile.jpg'"
                 alt="Sender img"
                 class="rounded-circle mt-3"
-
-              />
+                
+                />
+                <p class="ps-3 pt-4 " style="width:30vw">{{message.content}}</p>
             </span>
+            <!-- </div> -->
             <div class="chat-body">
-              <div class="header">
-                  <small class="text-muted">
-                      <span class="fa fa--clock-o">
-                          {{message.sentDate| timeago}}
-                      </span>
-  
-                      @if ((!message.dateRead && message.senderName !== userName)) {
-                          <span class="text-danger">
-                              (Unread)
-                          </span>
-                      }
-  
-                      @if ((message.dateRead && message.senderName !== userName)) {
-                          <span class="text-success">
-                              (Read {{message.dateRead | timeago}})
-                          </span>
-                      }
-  
-                  </small>
+              <br>
+              <div class="header text-xxl-start">
+                <small class="text-muted">
+                  <span class="fa fa--clock-o">
+                    {{message.sentDate| timeago}}
+                  </span>
+                  <br>
+                  @if ((!message.dateRead && message.senderName !== userName())) {
+                    <span class="text-danger">
+                      (Unread)
+                    </span>
+                  }
+                  
+                  @if ((message.dateRead && message.senderName !== userName())) {
+                    <span class="text-success">
+                      (Read {{message.dateRead | timeago}})
+                    </span>
+                  }
+                  
+                </small>
               </div>
               
               
-              <p>{{message.content}}</p>
           </div>
           
           </div>
         </li>
-  
+          }
+         
+          @if (message.senderName=== accountServices.currentUser()?.userName) {
+            <li style="display: flex; justify-content: end; padding-right: 3%;">
+      <div>
+        <span class="chat-img float-end d-flex" >
+          <p class="px-3 pt-4" >{{message.content}}</p>
+          <img
+          [src]="message.senderPhotoUrl || './assets/profile.jpg'"
+          alt="Sender img"
+          class="rounded-circle mt-3"
+
+          />
+
+        </span>
+        <br>
+        <div class="chat-body">
+          <br>
+          <div class="header w-100 text-xxl-end">
+            <small class="text-muted">
+              <span class="fa fa--clock-o">
+                {{message.sentDate| timeago}}
+              </span>
+              <br>
+              @if ((!message.dateRead && message.senderName !== userName())) {
+                <span class="text-danger">
+                  (Unread)
+                </span>
+              }
+              
+              @if ((message.dateRead && message.senderName !== userName())) {
+                <span class="text-success">
+                  (Read {{message.dateRead | timeago}})
+                </span>
+              }
+              
+            </small>
+          </div>
+          
+        
+      </div>
+      
+      </div>
+    </li>
+  }
         }
       </ul>
       }

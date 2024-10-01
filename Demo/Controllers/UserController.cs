@@ -18,7 +18,7 @@ namespace Demo.Controllers;
 [Route("/[controller]")]
 
 [Authorize]
-public class UserController(IUserReposatory userReposatory, IMapper mapper, IphotoService photoService) : BaseApiController
+public class UserController(IUnitOfWork unitOfWork, IMapper mapper, IphotoService photoService) : BaseApiController
 {
 
     [HttpGet]
@@ -27,7 +27,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
     {
         userParams.CurrentUserName=User.GetUsername();
         
-        var users = await userReposatory.GetMembersAsync(userParams);
+        var users = await unitOfWork.UserReposatory.GetMembersAsync(userParams);
 
         Response.AddPaginationHeader(users);
 
@@ -42,7 +42,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
     [HttpGet("{username}")]
     public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
-        var user = await userReposatory.GetMemberAsync(username);
+        var user = await unitOfWork.UserReposatory.GetMemberAsync(username);
 
         if (user == null) return NotFound();
 
@@ -55,7 +55,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
     public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
     {
         var username = User.GetUsername();
-        var user = await userReposatory.GetUserByUsernameAsync(username);
+        var user = await unitOfWork.UserReposatory.GetUserByUsernameAsync(username);
 
        
         if (user == null)
@@ -74,7 +74,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
 
 
         
-        if (await userReposatory.SaveAllAsync())
+        if (await unitOfWork.Complete())
         {
             return NoContent();
         }
@@ -88,7 +88,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
     {
 
 
-        var user = await userReposatory.GetUserByUsernameAsync(User.GetUsername());
+        var user = await unitOfWork.UserReposatory.GetUserByUsernameAsync(User.GetUsername());
         if (user == null) return BadRequest("no user");
         
 
@@ -111,7 +111,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
 
         user.Photos.Add(photo);
 
-        if (await userReposatory.SaveAllAsync())
+        if (await unitOfWork.Complete())
             return CreatedAtAction(nameof(GetUsers),
                 new { username= user.UserName}, mapper.Map<PhotoDto>(photo)); 
         
@@ -123,7 +123,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
     {
 
 
-        var user = await userReposatory.GetUserByUsernameAsync(User.GetUsername());
+        var user = await unitOfWork.UserReposatory.GetUserByUsernameAsync(User.GetUsername());
         if (user == null) return BadRequest("no user");
 
 
@@ -138,7 +138,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
 
         
 
-        if (await userReposatory.SaveAllAsync())
+        if (await unitOfWork.Complete())
             return NoContent();
 
         return BadRequest("Problem while adding photo");
@@ -148,7 +148,7 @@ public class UserController(IUserReposatory userReposatory, IMapper mapper, Ipho
 [HttpDelete("delete-photo/{photoId:int}")]
 public async Task<ActionResult> DeletenPhoto(int photoId)
 {
-        var user = await userReposatory.GetUserByUsernameAsync(User.GetUsername());
+        var user = await unitOfWork.UserReposatory.GetUserByUsernameAsync(User.GetUsername());
         if (user == null) return BadRequest("no user");
 
 
@@ -164,7 +164,7 @@ public async Task<ActionResult> DeletenPhoto(int photoId)
 
         user.Photos.Remove(photo);
 
-        if (await userReposatory.SaveAllAsync())
+        if (await unitOfWork.Complete())
         return Ok();
 
     return BadRequest("Problem while adding photo");

@@ -11,6 +11,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './_interceptors/loading.interceptor';
 import { TimeagoModule } from "ngx-timeago";
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CommonModule } from '@angular/common';
 
 
 export const appConfig: ApplicationConfig = {
@@ -22,6 +23,6 @@ export const appConfig: ApplicationConfig = {
     provideToastr({
         positionClass:'toast-top-center'
     }),
-    importProvidersFrom(NgxSpinnerModule,TimeagoModule.forRoot(),ModalModule.forRoot(),) //.forRoot() method when you're setting up a module that provides services or configurations that should be available application-wide.
+    importProvidersFrom(NgxSpinnerModule,TimeagoModule.forRoot(),ModalModule.forRoot(),CommonModule) //.forRoot() method when you're setting up a module that provides services or configurations that should be available application-wide.
   ]
 };

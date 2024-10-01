@@ -35,7 +35,7 @@ export class DatePickersComponent implements ControlValueAccessor{
  
 get control(): FormControl{
   var formCont= this.ngControl.control as FormControl
-  console.log(formCont)
+  // console.log(formCont)
   
   return formCont
 }

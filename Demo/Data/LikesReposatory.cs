@@ -70,10 +70,10 @@ namespace Demo.Data
 
         }
 
-        public async Task<bool> SaveChanges()
-        {
-            var result = await context.SaveChangesAsync();
-            return result > 0;
-        }
+        //public async Task<bool> SaveChanges()
+        //{
+        //    var result = await context.SaveChangesAsync();
+        //    return result > 0;
+        //}
     }
 }

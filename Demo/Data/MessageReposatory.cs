@@ -12,6 +12,12 @@ namespace Demo.Data
 {
     public class MessageReposatory(DataContext context, IMapper mapper) : IMessageReposatory
     {
+
+        public void AddGroup(Group group)
+        {
+            context.Groups.Add(group);
+        }
+
         public void AddMessage(Message message)
         {
             context.Messages.Add(message);
@@ -22,12 +28,31 @@ namespace Demo.Data
             context.Remove(message);
         }
 
+        public async Task<Connection?> GetConnection(string connectionId)
+        {
+            return await context.Connections.FindAsync(connectionId);
+        }
+
+        public async Task<Group?> GetGroupForConnection(string connectionId)
+        {
+            return await context.Groups
+                .Include(x => x.Connections)
+                .Where(x => x.Connections.Any(c => c.ConnectionId == connectionId))
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Message> GetMessage(int id)
         {
             return await context.Messages.FindAsync(id);
         }
 
-       
+        public async Task<Group?> GetMessageGroup(string groupName)
+        {
+            return await context.Groups
+               .Include(x => x.Connections)
+               .FirstOrDefaultAsync(x => x.Name == groupName);
+        }
+
         public async Task<pagedList<MessageDto>> GetMessagesForUser(MessageParams messageParams)
         {
             var query = context.Messages
@@ -49,31 +74,43 @@ namespace Demo.Data
 
         public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recieverUserName)
         {
-            var message = await context.Messages
-                .Include(x => x.Sender).ThenInclude(x => x.Photos)
-                .Include(x => x.Receiver).ThenInclude(x => x.Photos)
+            var query =  context.Messages
+                //.Include(x => x.Sender).ThenInclude(x => x.Photos)
+                //.Include(x => x.Receiver).ThenInclude(x => x.Photos)
                 .Where(x => x.ReceiverName == currentUserName && x.ReceiverDelete == false && x.SenderName == recieverUserName ||
-                x.SenderName == currentUserName && x.SenderDelete==false && x.ReceiverName == recieverUserName)
+                x.SenderName == currentUserName && x.SenderDelete == false && x.ReceiverName == recieverUserName)
                 .OrderBy(x => x.SentDate)
-                .ToListAsync();
+                //.ProjectTo<MessageDto>(mapper.ConfigurationProvider)
+                //.ToListAsync();
+                .AsQueryable();
 
 
 
-            var unreadMessages = message.Where(x => x.DateRead == null && x.ReceiverName == currentUserName).ToList();
+            var unreadMessages = query.Where(x => x.DateRead == null && x.ReceiverName == currentUserName).ToList();
 
             if (unreadMessages.Count != 0)
             {
                 unreadMessages.ForEach(x => x.DateRead = DateTime.UtcNow);
-                await context.SaveChangesAsync();
+
+                //await context.SaveChangesAsync();
             }
 
 
-            return mapper.Map<IEnumerable<MessageDto>>(message);
+            //return mapper.Map<IEnumerable<MessageDto>>(message);
+            return await query
+                .ProjectTo<MessageDto>(mapper.ConfigurationProvider)
+                .ToListAsync();
         }
-     public async Task<bool> SaveAllAsync()
+
+        public void RemoveConnection(Connection connection)
         {
-            return await context.SaveChangesAsync() > 0;
+            context.Connections.Remove(connection);
         }
+
+        //public async Task<bool> SaveAllAsync()
+        //{
+        //    return await context.SaveChangesAsync() > 0;
+        //}
     
     }
 }

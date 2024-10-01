@@ -10,7 +10,7 @@ namespace Demo.Controllers;
 //[Route("/[controller]")]
 
 
-public class LikesController(ILikeReposatory likeReposatory) : BaseApiController
+public class LikesController(IUnitOfWork unitOfWork) : BaseApiController
 {
     [HttpPost("{targetUserId:int}")]
     public async Task<ActionResult> ToggleLike(int targetUserId)
@@ -21,7 +21,7 @@ public class LikesController(ILikeReposatory likeReposatory) : BaseApiController
 
             return BadRequest("You cannot like yoursef");
         }
-        var exisistingLike = await likeReposatory.GetUserLike(sourceUserId, targetUserId);
+        var exisistingLike = await unitOfWork.LikeReposatory.GetUserLike(sourceUserId, targetUserId);
         if (exisistingLike == null)
         {
             var like = new UserLike
@@ -30,17 +30,17 @@ public class LikesController(ILikeReposatory likeReposatory) : BaseApiController
                 TargetUserId = targetUserId
             };
 
-            likeReposatory.AddLike(like);
+            unitOfWork.LikeReposatory.AddLike(like);
 
         }
 
         else
         {
-            likeReposatory.DeleteLike(exisistingLike);
+            unitOfWork.LikeReposatory.DeleteLike(exisistingLike);
         }
 
 
-        if (await likeReposatory.SaveChanges())
+        if (await unitOfWork.Complete())
         {
             return Ok();
         }
@@ -55,14 +55,14 @@ public class LikesController(ILikeReposatory likeReposatory) : BaseApiController
     [HttpGet("list")]
     public async Task<ActionResult<IEnumerable<int>>> GetCurrentUserLikesId()
     {
-        return Ok(await likeReposatory.GetCurrentUserLikeId(User.GetUserId()));
+        return Ok(await unitOfWork.LikeReposatory.GetCurrentUserLikeId(User.GetUserId()));
     }
 
     [HttpGet()]
     public async Task<ActionResult<IEnumerable<IEnumerable<MemberDto>>>> GetUserLikes([FromQuery] LikesParams likesParams)
     {
         likesParams.UserId = User.GetUserId();
-        var users = await likeReposatory.GetUserLikes(likesParams);
+        var users = await unitOfWork.LikeReposatory.GetUserLikes(likesParams);
 
         Response.AddPaginationHeader(users);
 

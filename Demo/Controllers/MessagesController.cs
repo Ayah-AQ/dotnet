@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Demo.Controllers
 {
     [Authorize]
-    public class MessagesController(IMapper mapper, IMessageReposatory messageReposatory, IUserReposatory userReposatory) : BaseApiController
+    public class MessagesController(IMapper mapper,IUnitOfWork unitOfWork) : BaseApiController
     {
         [HttpPost]
         public async Task<ActionResult<MessageDto>> CreateMessage(CreateMessageDto createMessageDto)
@@ -20,8 +20,8 @@ namespace Demo.Controllers
                 return BadRequest("You can't message yourself.");
             }
 
-            var sender = await userReposatory.GetUserByUsernameAsync(username);
-            var reciever = await userReposatory.GetUserByUsernameAsync(createMessageDto.ReceiverName);
+            var sender = await unitOfWork.UserReposatory.GetUserByUsernameAsync(username);
+            var reciever = await unitOfWork.UserReposatory.GetUserByUsernameAsync(createMessageDto.ReceiverName);
 
             if (reciever == null | sender == null ||sender?.UserName ==null || reciever?.UserName== null) return BadRequest("Message can't be send at this time");
 
@@ -33,12 +33,12 @@ namespace Demo.Controllers
                 ReceiverName = reciever.UserName,
                 //SenderPhotoUrl = sender.PhotoUrl,  // Assuming PhotoUrl exists
                 //ReceiverPhotoUrl = reciever.PhotoUrl,  // Assuming PhotoUrl exists
-                content = createMessageDto.content
+                Content = createMessageDto.Content
             };
 
-            messageReposatory.AddMessage(message);
+            unitOfWork.MessageReposatory.AddMessage(message);
 
-            if (await messageReposatory.SaveAllAsync())
+            if (await unitOfWork.Complete())
             {
                 return Ok(mapper.Map<MessageDto>(message));
             }
@@ -53,7 +53,7 @@ namespace Demo.Controllers
         {
             messageParams.UserName = User.GetUsername();
 
-            var messages = await messageReposatory.GetMessagesForUser(messageParams);
+            var messages = await unitOfWork.MessageReposatory.GetMessagesForUser(messageParams);
             Response.AddPaginationHeader(messages);
             return messages;
         }
@@ -67,7 +67,7 @@ namespace Demo.Controllers
 
            var currentUsername= User.GetUsername();
             
-            return Ok(await messageReposatory.GetMessageThread(currentUsername,username));
+            return Ok(await unitOfWork.MessageReposatory.GetMessageThread(currentUsername,username));
         }
 
 
@@ -76,7 +76,7 @@ namespace Demo.Controllers
         {
 
             var username = User.GetUsername();
-            var message = await messageReposatory.GetMessage(id);
+            var message = await unitOfWork.MessageReposatory.GetMessage(id);
 
             if (message == null) return BadRequest("No Message was added");
             if (message.SenderName != username && message.ReceiverName != username) return Forbid();
@@ -86,10 +86,10 @@ namespace Demo.Controllers
 
             if(message.SenderDelete == true && message.ReceiverDelete ==true)
             {
-                messageReposatory.DeleteMessage(message);
+                unitOfWork.MessageReposatory.DeleteMessage(message);
             }
 
-            if (await messageReposatory.SaveAllAsync())
+            if (await unitOfWork.Complete())
             {
                 return Ok();
             }

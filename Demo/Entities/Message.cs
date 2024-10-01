@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public required string SenderName { get; set; }
         public required string ReceiverName { get; set; }
-        public required string content { get; set; }
+        public required string Content { get; set; }
         public DateTime? DateRead { get; set; }
         public DateTime SentDate { get; set; } = DateTime.UtcNow;
         public bool SenderDelete { get; set; }

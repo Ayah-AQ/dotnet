@@ -62,7 +62,6 @@ resetuserParams(){
 getMember(userName: string){
   // const member = this.members().find(x => x.username === username);
   // if (  member != undefined) return of(member);
-  // debugger
 
 const member:Member = [...this.memberCache.values()]
 .reduce((arr, elem) => arr.concat(elem.body), [])

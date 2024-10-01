@@ -1,7 +1,7 @@
 <div class="container mt-5">
     <div style="text-align: center;">
         <!-- @if (!accountService.currentUser()){ -->
-        @if (!registerMode)
+        @if (!registerMode )
         {
             <h1>Find your match</h1>
             <p class="lead">Come on in to view your matches... all you need to do is sign up!</p>
@@ -10,6 +10,7 @@
                 <button class="btn btn-danger btn-lg me-2">Learn more</button>
             </div>
         }
+   
        @else
         {
             <div class="container">

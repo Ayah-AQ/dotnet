@@ -65,6 +65,7 @@ deleteMessages(id: number)
 
 getRout(message:Message){
 if (this.container == 'Outbox') {
+
   return `/members/${message.receiverName}`
 }
 else{

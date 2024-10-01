@@ -37,6 +37,7 @@ namespace Demo.Extintions
             services.AddScoped<IphotoService,PhotoService>();
             services.AddScoped<ILikeReposatory,LikesReposatory>();
             services.AddScoped<IMessageReposatory,MessageReposatory>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<LogUserActivity>();
             // Token Survice

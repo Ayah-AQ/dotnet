@@ -27,18 +27,6 @@ export class NavComponent {
 //  usersFromHomeComponent = input.required<any>();
   model: any={}; 
 
-
- 
-
-//   ngOnInit(): void {
-// this.http.get('https://localhost:5001/user').subscribe({
-//   next: response=> this.users[0] = response,
-//   error: error=> console.log(error),
-//   complete: ()=> console.log('compleated/'),
- 
-// })
-  // }
-
 login() {
   this.accountService.login(this.model).subscribe({
     next: () => {
